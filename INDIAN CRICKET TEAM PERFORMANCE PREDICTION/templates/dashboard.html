@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}India Team Performance Dashboard - India Cricket Analytics{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 3rem;">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Team Analytics</span>
+      <h1 class="section-title">India National Team Analytics Dashboard</h1>
+      <p class="section-desc">
+        Comprehensive statistical overview of the Indian National Cricket Team roster across Test, ODI, and T20I cricket formats.
+      </p>
+
+      <div class="verification-badge-banner" style="margin-top: 1.2rem; justify-content: center;">
+        <span>🛡️</span>
+        <span>Verified International Squad Aggregates. Compiled from official international career scorecards (ICC / ESPNcricinfo).</span>
+      </div>
+    </div>
+
+    <!-- Team Overview High-Level Metrics -->
+    <div class="hero-stats-bar" style="margin-bottom: 2.5rem;">
+      <div class="stat-item">
+        <div class="stat-value highlight-blue">{{ team_summary.total_squad }}</div>
+        <div class="stat-label">Core Squad Analyzed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value highlight-saffron">{{ "{:,}".format(team_summary.total_runs) }}</div>
+        <div class="stat-label">Total International Runs</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value highlight-gold">{{ "{:,}".format(team_summary.total_wickets) }}</div>
+        <div class="stat-label">Total International Wickets</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">{{ team_summary.total_centuries }}</div>
+        <div class="stat-label">Total Squad 100s (Centuries)</div>
+      </div>
+    </div>
+
+    <!-- Leaderboards Section (Chart.js) -->
+    <div class="card-grid-2" style="margin-bottom: 2.5rem;">
+      <!-- Top Run Scorers Horizontal Bar Chart -->
+      <div class="analytics-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <h3>🏏 Top Run Scorers (International Total)</h3>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+          Combined runs scored across Test, ODI, and T20I formats.
+        </p>
+        <div class="chart-container">
+          <canvas id="topRunsChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Top Wicket Takers Horizontal Bar Chart -->
+      <div class="analytics-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <h3>🎯 Top Wicket Takers (International Total)</h3>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+          Combined international wickets taken across red ball and white ball cricket.
+        </p>
+        <div class="chart-container">
+          <canvas id="topWicketsChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Squad Composition & Format Matrix -->
+    <div class="card-grid-3" style="margin-bottom: 3rem;">
+      <!-- Role Distribution Doughnut Chart -->
+      <div class="analytics-card">
+        <h3>Squad Role Distribution</h3>
+        <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
+          Breakdown of specialist Batters, All-rounders, Bowlers, and Keepers.
+        </p>
+        <div class="chart-container" style="height: 260px;">
+          <canvas id="roleDistChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Format Breakdown Summary -->
+      <div class="analytics-card">
+        <h3>Format Specialization Breakdown</h3>
+        <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 1.2rem;">
+          Key Indian squad leaders and benchmark ratings per format.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div style="background: rgba(7, 17, 36, 0.7); border-left: 3px solid #FF5252; padding: 0.8rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF;">🔴 Test Cricket Pillars</div>
+            <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.2rem;">
+              Rohit Sharma (C), Virat Kohli, Yashasvi Jaiswal, Ravindra Jadeja, Jasprit Bumrah.
+            </div>
+          </div>
+          <div style="background: rgba(7, 17, 36, 0.7); border-left: 3px solid #00B4D8; padding: 0.8rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF;">⚪ ODI Format Pillars</div>
+            <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.2rem;">
+              Rohit Sharma (C), Virat Kohli, Shubman Gill, KL Rahul, Mohammed Shami, Kuldeep Yadav.
+            </div>
+          </div>
+          <div style="background: rgba(7, 17, 36, 0.7); border-left: 3px solid #FF9933; padding: 0.8rem 1rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF;">⚡ T20I Powerhouse</div>
+            <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.2rem;">
+              Suryakumar Yadav (C), Hardik Pandya, Yashasvi Jaiswal, Axar Patel, Jasprit Bumrah.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Prediction Shortcuts -->
+      <div class="analytics-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <h3>Quick Player Evaluation</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.2rem;">
+            Jump straight into AI model inference for India's star performers.
+          </p>
+          <ul class="leaderboard-list">
+            <li class="leaderboard-item">
+              <span>Virat Kohli (ODI Anchor)</span>
+              <a href="{{ url_for('prediction_page', player='virat-kohli', format='ODI') }}" class="btn-sm btn-outline">Predict</a>
+            </li>
+            <li class="leaderboard-item">
+              <span>Rohit Sharma (Test Opener)</span>
+              <a href="{{ url_for('prediction_page', player='rohit-sharma', format='Test') }}" class="btn-sm btn-outline">Predict</a>
+            </li>
+            <li class="leaderboard-item">
+              <span>Jasprit Bumrah (Pace Ace)</span>
+              <a href="{{ url_for('prediction_page', player='jasprit-bumrah', format='T20I') }}" class="btn-sm btn-outline">Predict</a>
+            </li>
+            <li class="leaderboard-item">
+              <span>Ravindra Jadeja (Test All-round)</span>
+              <a href="{{ url_for('prediction_page', player='ravindra-jadeja', format='Test') }}" class="btn-sm btn-outline">Predict</a>
+            </li>
+          </ul>
+        </div>
+        <div style="margin-top: 1rem;">
+          <a href="{{ url_for('prediction_page') }}" class="btn btn-primary" style="width: 100%;">
+            Launch Custom ML Prediction →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

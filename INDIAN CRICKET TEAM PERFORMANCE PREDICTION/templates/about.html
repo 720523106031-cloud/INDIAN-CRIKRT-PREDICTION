@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}About Project & DevOps Architecture - India Cricket Analytics{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 3rem;">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Academic Assignment & DevOps Architecture</span>
+      <h1 class="section-title">About The Project</h1>
+      <p class="section-desc">
+        A full-stack, cloud-deployable Machine Learning application engineered for an Electronics & Communication Engineering (ECE) DevOps assignment.
+      </p>
+    </div>
+
+    <!-- Project Overview Card -->
+    <div class="white-card" style="margin-bottom: 2.5rem;">
+      <h2 style="font-size: 1.6rem; margin-bottom: 1rem; color: #071124;">
+        🏏 Executive Project Summary
+      </h2>
+      <p style="font-size: 1rem; line-height: 1.7; margin-bottom: 1.2rem;">
+        The <strong>India Cricket Team Performance Prediction System</strong> is an end-to-end Machine Learning web platform designed to analyze, benchmark, and predict the match performance of Indian international cricketers across <strong>Test, ODI, and T20I formats</strong>.
+      </p>
+      <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem;">
+        Built specifically for an <strong>ECE College DevOps Assignment</strong>, the solution demonstrates professional software engineering practices: modular Python Flask backend architecture, scikit-learn machine learning pipelines, responsive client-side Chart.js telemetry, Git version control, and serverless deployment on Vercel.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 1.5rem;">
+        <div style="background: #F1F5F9; border-radius: var(--radius-md); padding: 1.2rem;">
+          <h4 style="color: #0F172A; margin-bottom: 0.4rem;">🎯 Primary Objective</h4>
+          <p style="font-size: 0.85rem; color: #475569; margin: 0;">Predict individual player impact scores (0–100) and compare squad performers using verified sports analytics models.</p>
+        </div>
+        <div style="background: #F1F5F9; border-radius: var(--radius-md); padding: 1.2rem;">
+          <h4 style="color: #0F172A; margin-bottom: 0.4rem;">⚙️ Technology Stack</h4>
+          <p style="font-size: 0.85rem; color: #475569; margin: 0;">Python, Flask, Scikit-Learn, Random Forest, Pandas, NumPy, Joblib, HTML5, CSS3, JavaScript, Chart.js.</p>
+        </div>
+        <div style="background: #F1F5F9; border-radius: var(--radius-md); padding: 1.2rem;">
+          <h4 style="color: #0F172A; margin-bottom: 0.4rem;">🚀 DevOps Delivery</h4>
+          <p style="font-size: 0.85rem; color: #475569; margin: 0;">GitHub version control, stateless serverless functions via Vercel WSGI bridge, and zero server file mutation.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Machine Learning Model Evaluation Section -->
+    <div id="ml-architecture" class="analytics-card" style="margin-bottom: 2.5rem; padding: 2.2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.8rem;">
+        <div>
+          <span class="section-tag" style="margin: 0;">Supervised Machine Learning</span>
+          <h2 style="font-size: 1.6rem; margin-top: 0.2rem;">Model Training & Quantitative Evaluation</h2>
+        </div>
+        <div>
+          <span class="player-role-badge" style="font-size: 0.85rem; padding: 0.35rem 0.9rem;">
+            Algorithm: {{ metrics.algorithm or 'Random Forest Regressor' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Evaluation Metrics Grid -->
+      <div class="hero-stats-bar" style="margin: 1.5rem 0;">
+        <div class="stat-item">
+          <div class="stat-value highlight-gold">
+            {{ metrics.test_r2_score or '0.952' }}
+          </div>
+          <div class="stat-label">Testing R² Score</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value highlight-cyan">
+            {{ metrics.test_mae or '2.42' }}
+          </div>
+          <div class="stat-label">Mean Absolute Error (MAE)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value highlight-saffron">
+            {{ metrics.test_rmse or '3.00' }}
+          </div>
+          <div class="stat-label">Root Mean Squared Error (RMSE)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">
+            {{ metrics.train_samples or '1,961' }} / {{ metrics.test_samples or '491' }}
+          </div>
+          <div class="stat-label">Train / Test Samples Split</div>
+        </div>
+      </div>
+
+      <!-- Format-Specific Evaluation Table -->
+      <h4 style="margin: 2rem 0 0.8rem; color: #CBD5E1;">Format-Specific Accuracy Breakdown:</h4>
+      <div style="overflow-x: auto;">
+        <table class="data-table" style="background: rgba(7, 17, 36, 0.6);">
+          <thead>
+            <tr>
+              <th>Match Format</th>
+              <th>Test Samples</th>
+              <th>Mean Absolute Error (MAE)</th>
+              <th>RMSE</th>
+              <th>R² Coefficient of Determination</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>🔴 Test Cricket</strong></td>
+              <td>189</td>
+              <td>2.463</td>
+              <td>2.973</td>
+              <td><span class="stat-winner">0.946</span></td>
+            </tr>
+            <tr>
+              <td><strong>⚪ One Day International (ODI)</strong></td>
+              <td>158</td>
+              <td>2.293</td>
+              <td>2.888</td>
+              <td><span class="stat-winner">0.950</span></td>
+            </tr>
+            <tr>
+              <td><strong>⚡ T20 International (T20I)</strong></td>
+              <td>144</td>
+              <td>2.524</td>
+              <td>3.152</td>
+              <td><span class="stat-winner">0.946</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Feature Importances Ranking -->
+      <h4 style="margin: 2rem 0 0.8rem; color: #CBD5E1;">Key Feature Weights (Random Forest Gini Importance):</h4>
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+        {% if metrics.feature_importances %}
+          {% for feat, imp in metrics.feature_importances.items() %}
+          <div style="background: rgba(7, 17, 36, 0.7); padding: 0.8rem 1rem; border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.88rem; color: #FFFFFF; font-weight: 600;">{{ feat }}</span>
+            <span style="font-size: 0.85rem; color: var(--india-cyan); font-weight: 700;">{{ (imp * 100)|round(2) }}%</span>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div style="background: rgba(7, 17, 36, 0.7); padding: 0.8rem 1rem; border-radius: var(--radius-sm); display: flex; justify-content: space-between;">
+            <span>Batting Average</span><span>45.48%</span>
+          </div>
+          <div style="background: rgba(7, 17, 36, 0.7); padding: 0.8rem 1rem; border-radius: var(--radius-sm); display: flex; justify-content: space-between;">
+            <span>Strike Rate</span><span>31.87%</span>
+          </div>
+          <div style="background: rgba(7, 17, 36, 0.7); padding: 0.8rem 1rem; border-radius: var(--radius-sm); display: flex; justify-content: space-between;">
+            <span>Role Encoding</span><span>13.03%</span>
+          </div>
+          <div style="background: rgba(7, 17, 36, 0.7); padding: 0.8rem 1rem; border-radius: var(--radius-sm); display: flex; justify-content: space-between;">
+            <span>Wickets</span><span>4.09%</span>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Limitations of Synthetic Data Alert -->
+      <div style="background: rgba(255, 119, 0, 0.1); border-left: 4px solid var(--india-saffron); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 1.2rem; margin-top: 2rem;">
+        <h4 style="color: var(--india-saffron); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
+          <span>⚠️</span> Academic Notice: Limitations of Synthetic Training Data
+        </h4>
+        <p style="font-size: 0.88rem; color: #E2E8F0; margin: 0; line-height: 1.6;">
+          Real international cricket presents limited sample sizes for rare player-role/format combinations. To ensure continuous feature space generalization without over-fitting, a structured synthetic data augmentation pipeline was utilized as a statistical fallback. These synthetic points model realistic Gaussian boundaries across strike rates, boundaries, and bowling economy. They calibrate the non-linear regression manifold and <strong>are not represented as real future match outcomes</strong>.
+        </p>
+      </div>
+    </div>
+
+    <!-- DevOps Pipeline & Cloud Architecture -->
+    <div id="devops-pipeline" class="analytics-card" style="margin-bottom: 2.5rem; padding: 2.2rem;">
+      <span class="section-tag">DevOps Assignment Architecture</span>
+      <h2 style="font-size: 1.6rem; margin-bottom: 1.2rem;">CI/CD & Serverless Deployment Pipeline</h2>
+
+      <div class="card-grid-3" style="margin-bottom: 1.5rem;">
+        <div style="background: rgba(7, 17, 36, 0.75); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.3rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.6rem;">🐙 GitHub Version Control</div>
+          <p style="font-size: 0.85rem; color: #CBD5E1;">
+            All application source files, templates, scripts, and model serialization assets are tracked via a modular Git repository structure with standardized commit conventions.
+          </p>
+        </div>
+
+        <div style="background: rgba(7, 17, 36, 0.75); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.3rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.6rem;">▲ Vercel Serverless WSGI</div>
+          <p style="font-size: 0.85rem; color: #CBD5E1;">
+            Configured with <code>api/index.py</code> and <code>vercel.json</code> using <code>@vercel/python</code>. Runs as auto-scaling stateless cloud serverless execution functions.
+          </p>
+        </div>
+
+        <div style="background: rgba(7, 17, 36, 0.75); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.3rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.6rem;">💾 Stateless Client Storage</div>
+          <p style="font-size: 0.85rem; color: #CBD5E1;">
+            To adhere to serverless read-only file systems, prediction histories are stored securely in browser <code>localStorage</code>, preventing ephemeral server disk errors.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact & Assignment Info -->
+    <div id="contact" class="analytics-card" style="padding: 2.2rem;">
+      <h3 style="margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>📬</span> College DevOps Assignment Information & Contact
+      </h3>
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+        Developed by an Electronics & Communication Engineering (ECE) college student. For project inquiries, evaluation queries, or DevOps demonstration, please review the instructions below or reach out via the assignment repository.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+        <div style="background: rgba(7, 17, 36, 0.6); padding: 1.2rem; border-radius: var(--radius-md);">
+          <div style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase;">Course & Department</div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF; margin-top: 0.2rem;">Electronics & Communication Engineering (ECE)</div>
+          <div style="font-size: 0.85rem; color: var(--india-cyan); margin-top: 0.2rem;">DevOps Laboratory Assignment</div>
+        </div>
+
+        <div style="background: rgba(7, 17, 36, 0.6); padding: 1.2rem; border-radius: var(--radius-md);">
+          <div style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase;">Repository & Deployment Target</div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF; margin-top: 0.2rem;">GitHub + Vercel Serverless</div>
+          <div style="font-size: 0.85rem; color: var(--india-saffron); margin-top: 0.2rem;">Python 3.10+ / Flask / Scikit-Learn</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

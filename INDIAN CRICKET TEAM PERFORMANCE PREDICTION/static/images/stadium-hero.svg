@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 480" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#040914"/>
+      <stop offset="60%" stop-color="#0A162B"/>
+      <stop offset="100%" stop-color="#102A4E"/>
+    </linearGradient>
+    <radialGradient id="lightBeam1" cx="15%" cy="10%" r="50%">
+      <stop offset="0%" stop-color="#00D2FF" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#00D2FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lightBeam2" cx="85%" cy="10%" r="50%">
+      <stop offset="0%" stop-color="#FF9933" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FF9933" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="pitchGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0B5D34"/>
+      <stop offset="25%" stop-color="#148348"/>
+      <stop offset="50%" stop-color="#1B9A57"/>
+      <stop offset="75%" stop-color="#148348"/>
+      <stop offset="100%" stop-color="#0B5D34"/>
+    </linearGradient>
+    <linearGradient id="stripGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#C2A676"/>
+      <stop offset="100%" stop-color="#9C8052"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1200" height="480" fill="url(#skyGrad)"/>
+
+  <!-- Floodlight Beams -->
+  <rect width="1200" height="480" fill="url(#lightBeam1)"/>
+  <rect width="1200" height="480" fill="url(#lightBeam2)"/>
+
+  <!-- Floodlight Towers -->
+  <!-- Left Tower -->
+  <polygon points="120,40 180,40 170,160 130,160" fill="#1C3052" opacity="0.8"/>
+  <circle cx="135" cy="40" r="10" fill="#E0F7FA"/>
+  <circle cx="150" cy="40" r="10" fill="#FFFFFF"/>
+  <circle cx="165" cy="40" r="10" fill="#E0F7FA"/>
+  <!-- Right Tower -->
+  <polygon points="1020,40 1080,40 1070,160 1030,160" fill="#1C3052" opacity="0.8"/>
+  <circle cx="1035" cy="40" r="10" fill="#FFF3E0"/>
+  <circle cx="1050" cy="40" r="10" fill="#FFFFFF"/>
+  <circle cx="1065" cy="40" r="10" fill="#FFF3E0"/>
+
+  <!-- Stadium Stands Curves -->
+  <path d="M 0 260 Q 600 200 1200 260 L 1200 480 L 0 480 Z" fill="#0C1D3A" opacity="0.9"/>
+  <path d="M 0 310 Q 600 250 1200 310 L 1200 480 L 0 480 Z" fill="#102548" opacity="0.8"/>
+
+  <!-- Outfield Grass Oval -->
+  <ellipse cx="600" cy="440" rx="550" ry="170" fill="url(#pitchGrad)"/>
+  <ellipse cx="600" cy="440" rx="460" ry="140" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="10 10" opacity="0.6"/>
+
+  <!-- Central Pitch Strip -->
+  <polygon points="565,340 635,340 655,475 545,475" fill="url(#stripGrad)"/>
+
+  <!-- Crease lines -->
+  <line x1="560" y1="365" x2="640" y2="365" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="548" y1="455" x2="652" y2="455" stroke="#FFFFFF" stroke-width="2.5"/>
+
+  <!-- Stumps representation -->
+  <line x1="597" y1="363" x2="597" y2="352" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="600" y1="363" x2="600" y2="351" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="603" y1="363" x2="603" y2="352" stroke="#FFFFFF" stroke-width="2"/>
+</svg>
+

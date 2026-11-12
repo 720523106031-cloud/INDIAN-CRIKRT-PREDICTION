@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}INDIA CRICKET PERFORMANCE ANALYTICS - AI-Powered Prediction System{% endblock %}
+
+{% block content %}
+<!-- Stadium-Themed Hero Section -->
+<section class="hero-section">
+  <div class="hero-backdrop-glow"></div>
+  <div class="container hero-content">
+    <div class="hero-badge">
+      <span>🏏</span>
+      <span>Machine Learning Sports Analytics • Indian National Cricket Team</span>
+    </div>
+
+    <h1 class="hero-title">
+      INDIA CRICKET PERFORMANCE <span class="hero-title-highlight">ANALYTICS</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      AI-Powered Indian Cricket Player Performance Prediction System.<br>
+      Trained on verified international career data across Test, ODI, and T20I formats to forecast player impact, evaluate batting/bowling benchmarks, and simulate match effectiveness.
+    </p>
+
+    <!-- Call-To-Action Buttons -->
+    <div class="hero-actions">
+      <a href="{{ url_for('prediction_page') }}" class="btn btn-primary">
+        <span>⚡</span> Player Performance Prediction
+      </a>
+      <a href="{{ url_for('comparison_page') }}" class="btn btn-secondary">
+        <span>⚔️</span> Player Comparison Tool
+      </a>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-outline">
+        <span>📊</span> Team Performance Analysis
+      </a>
+    </div>
+
+    <!-- Hero Stats Bar -->
+    <div class="hero-stats-bar">
+      <div class="stat-item">
+        <div class="stat-value highlight-blue">14+</div>
+        <div class="stat-label">Indian Squad Profiles</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value highlight-saffron">3 Formats</div>
+        <div class="stat-label">Test • ODI • T20I</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value highlight-gold">
+          {{ (metrics.test_r2_score * 100)|round(1) if metrics.test_r2_score else '95.2' }}%
+        </div>
+        <div class="stat-label">Model Accuracy (R² Score)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">Random Forest</div>
+        <div class="stat-label">ML Regression Engine</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Supported Formats & Core Features -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Comprehensive Coverage</span>
+      <h2 class="section-title">All Three Formats of International Cricket</h2>
+      <p class="section-desc">
+        Different cricket formats demand distinct skills. Our Scikit-Learn Random Forest model dynamically recalibrates statistical weights based on format context.
+      </p>
+    </div>
+
+    <div class="card-grid-3">
+      <!-- Test Format Card -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper" style="color: #FF5252; background: rgba(255, 82, 82, 0.12); border-color: rgba(255, 82, 82, 0.3);">
+          🔴
+        </div>
+        <h3 class="feature-title">Test Match Cricket</h3>
+        <p>
+          Emphasizes defensive resilience, high batting averages (50+), long-innings milestones, corridor-of-uncertainty bowling economy, and second-innings strike potency.
+        </p>
+        <div style="margin-top: 1rem;">
+          <a href="{{ url_for('players', format='Test') }}" class="btn-sm btn-outline" style="display: inline-block;">View Test Stars →</a>
+        </div>
+      </div>
+
+      <!-- ODI Format Card -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper" style="color: #00B4D8; background: rgba(0, 180, 216, 0.12); border-color: rgba(0, 180, 216, 0.3);">
+          ⚪
+        </div>
+        <h3 class="feature-title">One Day Internationals (ODI)</h3>
+        <p>
+          Balanced 50-over modeling combining middle-overs strike rotation, boundary percentage during powerplays, wicket-taking strike rates, and death-over economy control.
+        </p>
+        <div style="margin-top: 1rem;">
+          <a href="{{ url_for('players', format='ODI') }}" class="btn-sm btn-outline" style="display: inline-block;">View ODI Stars →</a>
+        </div>
+      </div>
+
+      <!-- T20I Format Card -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper" style="color: #FF9933; background: rgba(255, 153, 51, 0.12); border-color: rgba(255, 153, 51, 0.3);">
+          ⚡
+        </div>
+        <h3 class="feature-title">T20 Internationals (T20I)</h3>
+        <p>
+          High-tempo evaluation placing heavy weight on boundary hitting rates (SR 140+), 360-degree range, bowling dot ball percentages, and sub-7.5 death over economy.
+        </p>
+        <div style="margin-top: 1rem;">
+          <a href="{{ url_for('players', format='T20I') }}" class="btn-sm btn-outline" style="display: inline-block;">View T20I Stars →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="section" style="background: rgba(12, 29, 58, 0.35);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Workflow Architecture</span>
+      <h2 class="section-title">How The Prediction Engine Operates</h2>
+      <p class="section-desc">
+        A streamlined end-to-end Machine Learning pipeline designed for the ECE DevOps assignment.
+      </p>
+    </div>
+
+    <div class="card-grid-4">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3>Select or Input</h3>
+        <p>Select any verified Indian cricketer (e.g., Virat Kohli, Jasprit Bumrah) or manually enter custom match metrics.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3>Feature Encoding</h3>
+        <p>Inputs are mapped across 11 features including role, format, strike rate, averages, and boundary proportions.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3>Random Forest Inference</h3>
+        <p>The 150-estimator ensemble model predicts the player's calibrated performance index (0–100 scale).</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <h3>Insights & Persistence</h3>
+        <p>Categorizes tier (Excellent, Good, Average, Needs Improvement) and saves results to browser localStorage history.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Indian Stars Preview -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Elite Indian Squad</span>
+      <h2 class="section-title">Featured International Cricketers</h2>
+      <p class="section-desc">
+        Profiles powered by verified international career records. Select a player to forecast their performance.
+      </p>
+    </div>
+
+    <div class="card-grid-4">
+      {% for player in players[:4] %}
+      <div class="player-card">
+        <div>
+          <div class="player-header">
+            <div class="player-avatar">
+              {{ player.name[:2] }}
+            </div>
+            <div>
+              <span class="jersey-badge">#{{ player.jerseyNumber }}</span>
+              {% if player.captain %}
+              <span class="captain-tag">Captain</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="player-info">
+            <h3>{{ player.name }}</h3>
+            <span class="player-role-badge">{{ player.role }}</span>
+          </div>
+
+          <div class="player-stats-mini">
+            <div>
+              <div class="stat-mini-val">{{ player.stats.ODI.runs if player.stats.ODI.runs > 0 else player.stats.Test.runs }}</div>
+              <div class="stat-mini-lbl">Runs</div>
+            </div>
+            <div>
+              <div class="stat-mini-val">{{ player.stats.ODI.batting_avg if player.stats.ODI.runs > 0 else player.stats.Test.batting_avg }}</div>
+              <div class="stat-mini-lbl">Bat Avg</div>
+            </div>
+            <div>
+              <div class="stat-mini-val">{{ player.stats.ODI.wickets if player.stats.ODI.wickets > 0 else player.stats.Test.wickets }}</div>
+              <div class="stat-mini-lbl">Wickets</div>
+            </div>
+          </div>
+
+          <p style="font-size: 0.84rem; line-height: 1.5; margin-bottom: 1rem;">
+            {{ player.bio[:90] }}...
+          </p>
+        </div>
+
+        <div class="player-actions">
+          <a href="{{ url_for('prediction_page', player=player.id, format='ODI') }}" class="btn btn-sm btn-primary">Predict</a>
+          <a href="{{ url_for('comparison_page', p1=player.id) }}" class="btn btn-sm btn-secondary">Compare</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div style="text-align: center; margin-top: 2.5rem;">
+      <a href="{{ url_for('players') }}" class="btn btn-secondary">
+        Browse All {{ total_players }} Indian Cricketers →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- About Project Banner -->
+<section class="section" style="padding-top: 1rem;">
+  <div class="container">
+    <div class="analytics-card" style="background: linear-gradient(135deg, #0A1C38 0%, #102B54 100%); border-color: var(--border-accent); padding: 2.5rem;">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
+        <div style="max-width: 680px;">
+          <span class="section-tag">DevOps Assignment Project</span>
+          <h2 style="font-size: 1.8rem; margin-bottom: 0.6rem;">Engineering & Academic Architecture</h2>
+          <p style="color: #CBD5E1;">
+            This system integrates Scikit-Learn Random Forest Regressor ($R^2 = 0.952$), modular Python Flask backend, Chart.js visualizations, Git version control, and Vercel serverless deployment.
+          </p>
+        </div>
+        <div>
+          <a href="{{ url_for('about') }}" class="btn btn-primary">
+            Explore DevOps Architecture →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

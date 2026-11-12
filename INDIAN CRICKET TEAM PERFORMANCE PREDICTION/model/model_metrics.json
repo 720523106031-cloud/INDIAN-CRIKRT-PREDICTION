@@ -1,0 +1,74 @@
+{
+  "algorithm": "Random Forest Regressor",
+  "n_estimators": 150,
+  "max_depth": 14,
+  "random_state": 42,
+  "total_dataset_size": 2452,
+  "train_samples": 1961,
+  "test_samples": 491,
+  "test_mae": 2.539,
+  "test_rmse": 3.156,
+  "test_r2_score": 0.899,
+  "train_r2_score": 0.978,
+  "format_evaluation": {
+    "Test": {
+      "samples": 189,
+      "mae": 2.504,
+      "rmse": 3.185,
+      "r2_score": 0.923
+    },
+    "ODI": {
+      "samples": 158,
+      "mae": 2.517,
+      "rmse": 3.124,
+      "r2_score": 0.869
+    },
+    "T20I": {
+      "samples": 144,
+      "mae": 2.608,
+      "rmse": 3.153,
+      "r2_score": 0.829
+    }
+  },
+  "feature_columns": [
+    "role_encoded",
+    "format_encoded",
+    "matches",
+    "runs",
+    "batting_avg",
+    "strike_rate",
+    "fours",
+    "sixes",
+    "wickets",
+    "bowling_avg",
+    "bowling_econ"
+  ],
+  "feature_importances": {
+    "batting_avg": 0.3344,
+    "strike_rate": 0.2789,
+    "role_encoded": 0.1906,
+    "bowling_avg": 0.0954,
+    "bowling_econ": 0.0456,
+    "wickets": 0.0237,
+    "matches": 0.0079,
+    "sixes": 0.0077,
+    "runs": 0.0065,
+    "fours": 0.006,
+    "format_encoded": 0.0032
+  },
+  "role_mapping": {
+    "Top-order Batter": 0,
+    "Middle-order Batter": 1,
+    "Wicketkeeper Batter": 2,
+    "Batting All-rounder": 3,
+    "Bowling All-rounder": 4,
+    "Pace Bowler": 5,
+    "Spin Bowler": 6
+  },
+  "format_mapping": {
+    "Test": 0,
+    "ODI": 1,
+    "T20I": 2
+  },
+  "synthetic_data_limitation_notice": "Synthetic training augmentations are statistical interpolations based on standard cricket performance distributions. They calibrate non-linear regression boundaries across rare feature combinations and do NOT represent actual upcoming match results."
+}

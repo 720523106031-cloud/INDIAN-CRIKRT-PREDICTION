@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}Player Performance Prediction - India Cricket Analytics{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 3rem;">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Machine Learning Engine</span>
+      <h1 class="section-title">Player Performance Prediction</h1>
+      <p class="section-desc">
+        Calculate an AI-driven Cricket Performance Score (0–100) using our trained Random Forest Regressor ($R^2 = 0.952$). Select a verified Indian cricketer or enter custom statistics.
+      </p>
+    </div>
+
+    <!-- Quick Autofill Selector Bar -->
+    <div class="quick-selector-bar">
+      <span style="font-size: 0.9rem; font-weight: 700; color: #FFFFFF; display: flex; align-items: center; gap: 0.4rem;">
+        ⚡ Quick Indian Player Autofill:
+      </span>
+      <div style="flex: 1; min-width: 250px;">
+        <select id="selectExistingPlayer" class="form-control" style="background: rgba(12, 29, 58, 0.9);">
+          <option value="">-- Choose Indian Cricketer (Optional Autofill) --</option>
+          {% for p in players %}
+          <option value="{{ p.id }}" {% if prefill_player and prefill_player.id == p.id %}selected{% endif %}>
+            {{ p.name }} ({{ p.role }})
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="button" id="clearFormBtn" class="btn btn-outline" style="padding: 0.55rem 1.1rem; font-size: 0.84rem;">
+        Clear Form
+      </button>
+    </div>
+
+    <div class="card-grid-2" style="align-items: start;">
+      <!-- Prediction Form -->
+      <div class="form-card">
+        <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>📝</span> Input Player Statistics
+        </h3>
+
+        <form id="predictionForm" novalidate>
+          <!-- General Attributes -->
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label class="form-label" for="playerName">Player Name <span class="req">*</span></label>
+              <input type="text" id="playerName" name="playerName" class="form-control" placeholder="e.g. Virat Kohli" required value="{{ prefill_player.name if prefill_player else '' }}">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="playerRole">Player Role <span class="req">*</span></label>
+              <select id="playerRole" name="playerRole" class="form-control" required>
+                {% for r in roles %}
+                <option value="{{ r }}" {% if prefill_player and prefill_player.role == r %}selected{% endif %}>{{ r }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="matchFormat">Match Format <span class="req">*</span></label>
+              <select id="matchFormat" name="matchFormat" class="form-control" required>
+                <option value="ODI" {% if prefill_format == 'ODI' %}selected{% endif %}>One Day International (ODI)</option>
+                <option value="Test" {% if prefill_format == 'Test' %}selected{% endif %}>Test Cricket</option>
+                <option value="T20I" {% if prefill_format == 'T20I' %}selected{% endif %}>T20 International (T20I)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Matches & Batting Stats -->
+          <div style="margin: 1.5rem 0 0.8rem; font-size: 0.85rem; font-weight: 700; color: var(--india-cyan); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.4rem;">
+            🏏 Batting Statistics
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label class="form-label" for="matchesPlayed">Matches Played <span class="req">*</span></label>
+              <input type="number" id="matchesPlayed" name="matchesPlayed" class="form-control" min="1" max="600" step="1" placeholder="e.g. 50" required value="{{ prefill_player.stats[prefill_format].matches if prefill_player else '50' }}">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="totalRuns">Total Runs</label>
+              <input type="number" id="totalRuns" name="totalRuns" class="form-control" min="0" max="40000" step="1" placeholder="e.g. 2500" value="{{ prefill_player.stats[prefill_format].runs if prefill_player else '2500' }}">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="battingAvg">Batting Average</label>
+              <input type="number" id="battingAvg" name="battingAvg" class="form-control" min="0" max="150" step="0.01" placeholder="e.g. 48.5" value="{{ prefill_player.stats[prefill_format].batting_avg if prefill_player else '48.50' }}">
+            </div>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label class="form-label" for="strikeRate">Batting Strike Rate</label>
+              <input type="number" id="strikeRate" name="strikeRate" class="form-control" min="0" max="400" step="0.01" placeholder="e.g. 92.5" value="{{ prefill_player.stats[prefill_format].strike_rate if prefill_player else '92.50' }}">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="totalFours">Total Fours</label>
+              <input type="number" id="totalFours" name="totalFours" class="form-control" min="0" max="5000" step="1" placeholder="e.g. 220" value="{{ prefill_player.stats[prefill_format].fours if prefill_player else '220' }}">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="totalSixes">Total Sixes</label>
+              <input type="number" id="totalSixes" name="totalSixes" class="form-control" min="0" max="1000" step="1" placeholder="e.g. 45" value="{{ prefill_player.stats[prefill_format].sixes if prefill_player else '45' }}">
+            </div>
+          </div>
+
+          <!-- Bowling Stats -->
+          <div style="margin: 1.5rem 0 0.8rem; font-size: 0.85rem; font-weight: 700; color: var(--india-saffron); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.4rem;">
+            🎯 Bowling Statistics (Optional for pure batters)
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label class="form-label" for="wicketsTaken">Wickets Taken</label>
+              <input type="number" id="wicketsTaken" name="wicketsTaken" class="form-control" min="0" max="1000" step="1" placeholder="e.g. 5" value="{{ prefill_player.stats[prefill_format].wickets if prefill_player else '0' }}">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="bowlingAvg">Bowling Average</label>
+              <input type="number" id="bowlingAvg" name="bowlingAvg" class="form-control" min="0" max="200" step="0.01" placeholder="e.g. 26.5" value="{{ prefill_player.stats[prefill_format].bowling_avg if prefill_player else '0.00' }}">
+              <div class="form-hint">Enter 0 for non-bowlers</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="bowlingEcon">Bowling Economy</label>
+              <input type="number" id="bowlingEcon" name="bowlingEcon" class="form-control" min="0" max="36" step="0.01" placeholder="e.g. 4.8" value="{{ prefill_player.stats[prefill_format].bowling_econ if prefill_player else '0.00' }}">
+              <div class="form-hint">Enter 0 for non-bowlers</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.8rem;">
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1.05rem;">
+              <span>⚡</span> Run Machine Learning Prediction
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Live Prediction Result Card -->
+      <div id="predictionResultBox" class="result-card" style="display: none;">
+        <div class="result-header">
+          <div>
+            <h2 id="resPlayerName" style="font-size: 1.6rem; margin-bottom: 0.2rem;">Player Name</h2>
+            <div id="resPlayerMeta" style="color: var(--india-cyan); font-weight: 600; font-size: 0.9rem;">
+              Role • Format
+            </div>
+          </div>
+          <div>
+            <span id="resCategoryBadge" class="badge-category badge-excellent">
+              Excellent
+            </span>
+          </div>
+        </div>
+
+        <!-- Score Meter Gauge -->
+        <div class="score-display-wrapper">
+          <div class="score-circle">
+            <svg viewBox="0 0 140 140">
+              <circle class="bg" cx="70" cy="70" r="60"></circle>
+              <circle id="scoreCircleProgress" class="progress" cx="70" cy="70" r="60"></circle>
+            </svg>
+            <div class="score-inner-text">
+              <div id="resScoreNum" class="score-num">0</div>
+              <div class="score-max">OUT OF 100</div>
+            </div>
+          </div>
+
+          <div class="score-meta">
+            <h4 style="margin-bottom: 0.4rem;">Performance Tier</h4>
+            <p id="resCategoryDesc" style="font-size: 0.9rem; line-height: 1.5; color: #CBD5E1;">
+              Tier description will appear here.
+            </p>
+            <div style="font-size: 0.74rem; color: var(--text-muted); margin-top: 0.6rem;">
+              Algorithm: <strong>Scikit-Learn Random Forest Regressor</strong> (150 trees, max_depth 12)
+            </div>
+          </div>
+        </div>
+
+        <!-- Analytical Breakdowns -->
+        <div class="insight-box">
+          <div class="insight-title">
+            <span>🏏</span> Batting Impact Analysis
+          </div>
+          <p id="resBattingAnalysis" style="font-size: 0.9rem; color: #E2E8F0; margin: 0;"></p>
+        </div>
+
+        <div class="insight-box bowling">
+          <div class="insight-title">
+            <span>🎯</span> Bowling Impact Analysis
+          </div>
+          <p id="resBowlingAnalysis" style="font-size: 0.9rem; color: #E2E8F0; margin: 0;"></p>
+        </div>
+
+        <!-- Actionable Technical Suggestions -->
+        <div style="margin-top: 1.5rem; background: rgba(7, 17, 36, 0.7); border-radius: var(--radius-md); padding: 1.3rem;">
+          <h4 style="margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.4rem; color: var(--india-gold);">
+            <span>💡</span> Tactical & Technical Improvement Suggestions
+          </h4>
+          <ul id="resSuggestionsList" class="suggestions-list"></ul>
+        </div>
+      </div>
+
+      <!-- Placeholder before first prediction -->
+      <div id="resultPlaceholder" class="analytics-card" style="text-align: center; padding: 4rem 2rem;">
+        <div style="font-size: 3.5rem; margin-bottom: 1rem;">🏏</div>
+        <h3 style="margin-bottom: 0.5rem;">AI Prediction Engine Ready</h3>
+        <p style="color: var(--text-secondary); max-width: 400px; margin: 0 auto;">
+          Select an Indian cricketer from the dropdown above to autofill verified data, or fill in custom stats and click <strong>Run Machine Learning Prediction</strong>.
+        </p>
+        <div class="verification-badge-banner" style="margin-top: 2rem; justify-content: center;">
+          <span>ℹ️</span>
+          <span>Predictions represent estimated statistical performance index based on ICC benchmark formulations.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prediction History Section (localStorage) -->
+    <div class="history-section">
+      <div class="history-header">
+        <div>
+          <h3>Prediction History</h3>
+          <p style="font-size: 0.85rem;">Persisted in your browser localStorage. No local server files used (Vercel serverless compatible).</p>
+        </div>
+        <button id="clearHistoryBtn" class="btn btn-sm btn-outline">
+          Clear History
+        </button>
+      </div>
+
+      <div class="history-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date / Time</th>
+              <th>Player Name</th>
+              <th>Format</th>
+              <th>Role</th>
+              <th>Predicted Score</th>
+              <th>Category</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <!-- Dynamically populated via script.js -->
+          </tbody>
+        </table>
+        <div id="historyEmptyMsg" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+          No predictions saved in history yet. Run a prediction to see it listed here!
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

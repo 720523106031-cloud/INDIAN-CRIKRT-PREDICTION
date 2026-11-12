@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Indian Cricket Team Squad & Player Profiles - India Cricket Analytics{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 3rem;">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">National Roster</span>
+      <h1 class="section-title">Indian National Cricket Team Squad</h1>
+      <p class="section-desc">
+        Explore verified career statistics across Test, ODI, and T20I formats. Select any player to analyze their metrics or launch an AI performance forecast.
+      </p>
+
+      <div class="verification-badge-banner" style="margin-top: 1.5rem; justify-content: center;">
+        <span>🛡️</span>
+        <span>Verified International Career Statistics. Data compiled from official ICC & ESPNcricinfo records up to 2025/2026.</span>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="analytics-card" style="margin-bottom: 2.5rem; padding: 1.4rem;">
+      <div style="display: flex; gap: 1.2rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+        <!-- Live Search -->
+        <div style="flex: 1; min-width: 260px;">
+          <input type="text" id="playerDirectorySearch" class="form-control" placeholder="🔍 Search player by name or role (e.g., Kohli, Bumrah, All-rounder)..." value="{{ search_query }}">
+        </div>
+
+        <!-- Format & Role Filters -->
+        <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+          <a href="{{ url_for('players', format='All', role=selected_role) }}" class="filter-tab {% if selected_format == 'All' %}active{% endif %}">All Formats</a>
+          <a href="{{ url_for('players', format='Test', role=selected_role) }}" class="filter-tab {% if selected_format == 'Test' %}active{% endif %}">🔴 Test</a>
+          <a href="{{ url_for('players', format='ODI', role=selected_role) }}" class="filter-tab {% if selected_format == 'ODI' %}active{% endif %}">⚪ ODI</a>
+          <a href="{{ url_for('players', format='T20I', role=selected_role) }}" class="filter-tab {% if selected_format == 'T20I' %}active{% endif %}">⚡ T20I</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Players Grid -->
+    <div class="card-grid-3" id="playersCardContainer">
+      {% for player in players %}
+      <div class="player-card" data-player-name="{{ player.name }}" data-player-role="{{ player.role }} {{ player.category }}">
+        <div>
+          <div class="player-header">
+            <div class="player-avatar">
+              {{ player.name[:2] }}
+            </div>
+            <div>
+              <span class="jersey-badge">#{{ player.jerseyNumber }}</span>
+              {% if player.captain %}
+              <span class="captain-tag">Captain ({{ player.captainFormats|join(', ') }})</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="player-info" style="margin-bottom: 0.8rem;">
+            <h3 style="font-size: 1.3rem;">{{ player.name }}</h3>
+            <span class="player-role-badge">{{ player.role }}</span>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.3rem;">
+              {{ player.battingStyle }} • {{ player.bowlingStyle }}
+            </div>
+          </div>
+
+          <p style="font-size: 0.85rem; line-height: 1.5; color: #CBD5E1; margin-bottom: 1.2rem;">
+            {{ player.bio }}
+          </p>
+
+          <!-- Format Tabs / Specific Stats Display -->
+          {% set fmt = 'ODI' if selected_format == 'All' else selected_format %}
+          {% set st = player.stats.get(fmt, {}) %}
+
+          <div style="background: rgba(7, 17, 36, 0.75); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.4rem;">
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--india-cyan);">
+                {{ fmt }} CAREER STATISTICS
+              </span>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">
+                {{ st.matches }} Matches
+              </span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; text-align: center;">
+              <div>
+                <div style="font-size: 1.05rem; font-weight: 700; color: #FFFFFF;">{{ st.runs }}</div>
+                <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">Runs</div>
+              </div>
+              <div>
+                <div style="font-size: 1.05rem; font-weight: 700; color: #FFFFFF;">{{ st.batting_avg }}</div>
+                <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">Bat Avg</div>
+              </div>
+              <div>
+                <div style="font-size: 1.05rem; font-weight: 700; color: #FFFFFF;">{{ st.strike_rate }}</div>
+                <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">SR</div>
+              </div>
+              <div>
+                <div style="font-size: 1.05rem; font-weight: 700; color: #FFFFFF;">{{ st.wickets }}</div>
+                <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">Wkts</div>
+              </div>
+            </div>
+
+            {% if st.wickets > 0 %}
+            <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--text-secondary); margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.08);">
+              <span>Bowl Avg: <strong>{{ st.bowling_avg }}</strong></span>
+              <span>Econ: <strong>{{ st.bowling_econ }}</strong></span>
+              <span>100s: <strong>{{ st.centuries }}</strong></span>
+            </div>
+            {% else %}
+            <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--text-secondary); margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.08);">
+              <span>Centuries: <strong>{{ st.centuries }}</strong></span>
+              <span>Fifties: <strong>{{ st.fifties }}</strong></span>
+              <span>Fours: <strong>{{ st.fours }}</strong></span>
+              <span>Sixes: <strong>{{ st.sixes }}</strong></span>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="player-actions">
+          <a href="{{ url_for('prediction_page', player=player.id, format=fmt) }}" class="btn btn-sm btn-primary">
+            ⚡ Predict Impact
+          </a>
+          <a href="{{ url_for('comparison_page', p1=player.id, format=fmt) }}" class="btn btn-sm btn-secondary">
+            ⚔️ Compare
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if not players %}
+    <div style="text-align: center; padding: 4rem 1rem; color: var(--text-secondary);">
+      <h3>No players found matching your search.</h3>
+      <p style="margin-top: 0.5rem;">Try searching for another cricketer or reset the format filter.</p>
+      <a href="{{ url_for('players') }}" class="btn btn-outline" style="margin-top: 1rem;">View All Players</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}India Cricket Performance Analytics{% endblock %}</title>
+  <meta name="description" content="AI-Powered Indian Cricket Player Performance Prediction System using Machine Learning (Random Forest) for Test, ODI, and T20I cricket.">
+  <meta name="keywords" content="India Cricket, Player Performance Prediction, Machine Learning, Random Forest, Cricket Analytics, BCCI, Virat Kohli, Rohit Sharma, Jasprit Bumrah">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/cricket-crest.svg') }}">
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <!-- Chart.js CDN for Analytics Visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="{{ url_for('home') }}" class="brand-link" title="India Cricket Performance Analytics">
+        <img src="{{ url_for('static', filename='images/cricket-crest.svg') }}" alt="India Cricket Analytics Crest" class="brand-crest">
+        <div class="brand-text">
+          <span class="brand-title">INDIA CRICKET PERFORMANCE ANALYTICS</span>
+          <span class="brand-subtitle">AI-Powered Player Performance Prediction</span>
+        </div>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle navigation menu">
+        ☰
+      </button>
+
+      <ul class="nav-menu">
+        <li><a href="{{ url_for('home') }}" class="nav-link {% if request.path == '/' %}active{% endif %}">Home</a></li>
+        <li><a href="{{ url_for('players') }}" class="nav-link {% if request.path == '/players' %}active{% endif %}">Squad Profiles</a></li>
+        <li><a href="{{ url_for('prediction_page') }}" class="nav-link {% if request.path == '/prediction' %}active{% endif %}">ML Prediction</a></li>
+        <li><a href="{{ url_for('comparison_page') }}" class="nav-link {% if request.path == '/comparison' %}active{% endif %}">Player Comparison</a></li>
+        <li><a href="{{ url_for('dashboard') }}" class="nav-link {% if request.path == '/dashboard' %}active{% endif %}">Team Analytics</a></li>
+        <li><a href="{{ url_for('about') }}" class="nav-link {% if request.path == '/about' %}active{% endif %}">About & DevOps</a></li>
+        <li><a href="{{ url_for('prediction_page') }}" class="btn nav-cta-btn">Predict Now</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-link" style="margin-bottom: 0.6rem;">
+            <img src="{{ url_for('static', filename='images/cricket-crest.svg') }}" alt="Crest" class="brand-crest" style="width: 38px; height: 38px;">
+            <span class="brand-title" style="font-size: 1.05rem;">INDIA CRICKET ANALYTICS</span>
+          </div>
+          <p>
+            An academic Machine Learning & DevOps project predicting Indian National Cricket Team player impact scores across Test, ODI, and T20I formats using Scikit-Learn Random Forest regression.
+          </p>
+          <div class="verification-badge-banner" style="margin-top: 1rem;">
+            <span>🛡️</span>
+            <span>Verified international career statistics compiled up to 2025/2026. ICC/ESPNcricinfo records.</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Analytics Tools</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('prediction_page') }}">Player Score Prediction</a></li>
+            <li><a href="{{ url_for('comparison_page') }}">Head-to-Head Comparison</a></li>
+            <li><a href="{{ url_for('dashboard') }}">India Team Dashboard</a></li>
+            <li><a href="{{ url_for('players') }}">Player Career Profiles</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Match Formats</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('players', format='Test') }}">Test Match Cricket</a></li>
+            <li><a href="{{ url_for('players', format='ODI') }}">One Day Internationals (ODI)</a></li>
+            <li><a href="{{ url_for('players', format='T20I') }}">T20 Internationals (T20I)</a></li>
+            <li><a href="{{ url_for('dashboard') }}">Multi-Format Records</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>DevOps & Engineering</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('about') }}#devops-pipeline">CI/CD & GitHub Architecture</a></li>
+            <li><a href="{{ url_for('about') }}#ml-architecture">Random Forest Model Specs</a></li>
+            <li><a href="{{ url_for('about') }}#evaluation">Model Evaluation Metrics</a></li>
+            <li><a href="{{ url_for('about') }}#contact">Academic Project Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 India Cricket Performance Analytics • ECE College DevOps Assignment.
+        </div>
+        <div>
+          Built with Python Flask, Scikit-Learn, Chart.js & Vercel Serverless.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript File -->
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
+
